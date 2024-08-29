@@ -1,0 +1,121 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "2.0.0",
+		"title": "d3 API"
+	},
+	"consumes": ["application/json"],
+	"produces": ["application/json"],
+	"paths": {
+		"/test/filestream": {
+			"get": {
+				"operationId": "Test_FileStream",
+				"responses": {
+					"200": {
+						"description": "A successful response.(streaming responses)",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"result": {
+									"$ref": "#/definitions/testFileEvent"
+								},
+								"error": {
+									"$ref": "#/definitions/runtimeStreamError"
+								}
+							},
+							"title": "Stream result of testFileEvent"
+						}
+					}
+				},
+				"parameters": [
+					{
+						"name": "path",
+						"in": "query",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"tags": ["Test"]
+			}
+		}
+	},
+	"definitions": {
+		"protobufAny": {
+			"type": "object",
+			"properties": {
+				"type_url": {
+					"type": "string"
+				},
+				"value": {
+					"type": "string",
+					"format": "byte"
+				}
+			}
+		},
+		"runtimeStreamError": {
+			"type": "object",
+			"properties": {
+				"grpc_code": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"http_code": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"message": {
+					"type": "string"
+				},
+				"http_status": {
+					"type": "string"
+				},
+				"details": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/protobufAny"
+					}
+				}
+			}
+		},
+		"testAddFile": {
+			"type": "object",
+			"properties": {
+				"path": {
+					"type": "string"
+				},
+				"size": {
+					"type": "string",
+					"format": "uint64"
+				}
+			}
+		},
+		"testFileEvent": {
+			"type": "object",
+			"properties": {
+				"added": {
+					"$ref": "#/definitions/testAddFile"
+				},
+				"removed": {
+					"$ref": "#/definitions/testRemoveFile"
+				}
+			}
+		},
+		"testNewFileEvent": {
+			"type": "object",
+			"properties": {
+				"path": {
+					"type": "string"
+				}
+			}
+		},
+		"testRemoveFile": {
+			"type": "object",
+			"properties": {
+				"path": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"basePath": "/api/experimental"
+}
