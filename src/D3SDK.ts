@@ -16,15 +16,21 @@ export class D3 {
 		targetServer = "127.0.0.1",
 		targetPort = 7401,
 		receivePort = 7400,
+		protocol = "http",
+	}: {
+		targetServer: string;
+		targetPort: number;
+		receivePort: number;
+		protocol: "http" | "https" | "ws" | "wss";
 	}) {
 		this.#targetPort = targetPort;
 		this.osc = new D3OSCClient({
 			targetServer,
 			targetPort,
 		});
-		this.systems = new SystemsClient("http://" + targetServer);
-		this.session = new StatusClient("http://" + targetServer);
-		this.showControl = new ShowControlClient("http://" + targetServer);
+		this.systems = new SystemsClient(protocol + "://" + targetServer);
+		this.session = new StatusClient(protocol + "://" + targetServer);
+		this.showControl = new ShowControlClient(protocol + "://" + targetServer);
 	}
 
 	public async goToTime({
@@ -55,7 +61,6 @@ export class D3 {
 				],
 			}),
 		});
-		console.log(res);
 		return res;
 	}
 
@@ -91,7 +96,6 @@ export class D3 {
 				}),
 			},
 		);
-		console.log(res);
 		return res;
 	}
 
@@ -125,7 +129,6 @@ export class D3 {
 				],
 			}),
 		});
-		console.log(res);
 		return res;
 	}
 }
